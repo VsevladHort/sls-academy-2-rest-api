@@ -5,6 +5,7 @@ import {getPool} from "./db/connection.js";
 import express from "express";
 import pg from "pg";
 import authRouter from "./routers/auth.js"
+import userRouter from "./routers/userRouter.js"
 
 const app = express();
 const PORT = process.env.PORT ?? 5000;
@@ -18,6 +19,7 @@ app.get("/health", async (req, res) => {
 });
 
 app.use("/auth", authRouter);
+app.use(userRouter);
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
