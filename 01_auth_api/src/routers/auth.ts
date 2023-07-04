@@ -12,8 +12,30 @@ const pool = await getPool();
 
 const authRouter = express();
 
-authRouter.post("/sign-in", validateSignInAndUpInformation, (req, res) => {
-    res.sendStatus(200);
+authRouter.post("/sign-in", validateSignInAndUpInformation, async (req, res) => {
+    const existingUser = await pool.query("SELECT * FROM site_user WHERE email = $1", [req.body.email])
+    if (existingUser.rows.length > 0) {
+        try {
+            const isCorrect = await bcrypt.compare(req.body.password, existingUser.rows[0].user_pass);
+            if (isCorrect) {
+                const accessToken = await generateAccessToken({id_site_user: existingUser.rows[0].id_site_user}, {expiresIn: process.env.JWT_EXPIRATION});
+                const refreshToken = await generateToken({id_site_user: existingUser.rows[0].id_site_user}, {});
+                res.status(200).json({
+                    success: true,
+                    data: {
+                        id: existingUser.rows[0].id_site_user,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken
+                    }
+                });
+            } else
+                res.status(403).json({success: false, error: "Incorrect credentials"});
+        } catch (err) {
+            res.status(500).json({success: false, error: "Internal server error"});
+        }
+    } else {
+        res.status(404).json({success: false, error: `User with email ${req.body.email} does not exist`});
+    }
 });
 
 authRouter.post("/sign-up", validateSignInAndUpInformation, async (req, res) => {
@@ -37,7 +59,7 @@ authRouter.post("/sign-up", validateSignInAndUpInformation, async (req, res) => 
                     accessToken: accessToken,
                     refreshToken: refreshToken
                 }
-            })
+            });
         } else
             res.status(500).json({success: false, error: "Internal server error"});
     } catch (err) {
