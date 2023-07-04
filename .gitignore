@@ -2,3 +2,9 @@
 .env
 node_modules
 build
+# compilation output
+/*/src/**/*.js
+/*/src/**/*.d.ts
+/*/src/**/*.d.ts.map
+/*/src/**/*.js.map
+

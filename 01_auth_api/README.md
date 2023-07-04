@@ -26,7 +26,7 @@ tsc
 Start the app:
 
 ```bash
-node ./build/index.js
+node ./src/index.js
 ```
 
 Down database:
