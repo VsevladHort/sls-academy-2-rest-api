@@ -5,8 +5,7 @@ dotenv.config();
 import pg from "pg";
 import fs from 'fs';
 
-const initializationScriptFilePath = '../../db-init.sql';
-
+const initializationScriptFilePath = 'db-init.sql';
 
 let pool: pg.Pool | null = null;
 
