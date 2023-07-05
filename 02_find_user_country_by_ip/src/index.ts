@@ -20,7 +20,7 @@ app.post("/location", async (req, res) => {
         const requesterLocation = lookupLocation(req.ip);
         const requestLocation = lookupLocation(req.body.ip);
         console.log(`${requesterLocation} - ${req.ip}`);
-        console.log(`${requestLocation} - ${req.ip}`);
+        console.log(`${requestLocation} - ${req.body.ip}`);
         res.json(
             [
                 {
@@ -38,7 +38,7 @@ app.post("/location", async (req, res) => {
                         {
                             ip: req.body.ip,
                             country: requestLocation,
-                            readable: `${requestLocation} - ${req.ip}`
+                            readable: `${requestLocation} - ${req.body.ip}`
                         }
                 }
             ]
@@ -65,7 +65,7 @@ app.post("/location", async (req, res) => {
         );
     } else if (validateIPv4address(req.body.ip)) {
         const requestLocation = lookupLocation(req.body.ip);
-        console.log(`${requestLocation} - ${req.ip}`);
+        console.log(`${requestLocation} - ${req.body.ip}`);
         res.json(
             [
                 {
@@ -78,7 +78,7 @@ app.post("/location", async (req, res) => {
                         {
                             ip: req.body.ip,
                             country: requestLocation,
-                            readable: `${requestLocation} - ${req.ip}`
+                            readable: `${requestLocation} - ${req.body.ip}`
                         }
                 }
             ]
@@ -88,7 +88,6 @@ app.post("/location", async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
-    console.log(`http://localhost:${PORT}/health`);
 });
 
 function validateIPv4address(ipaddress: string | null | undefined) {
@@ -96,5 +95,3 @@ function validateIPv4address(ipaddress: string | null | undefined) {
         return false;
     return /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress);
 }
-
-console.log("Reached end of file. Truly.");
