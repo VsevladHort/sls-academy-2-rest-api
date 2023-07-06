@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS site_user
+CREATE TABLE IF NOT EXISTS short_links
 (
     short_link TEXT NOT NULL,
     long_link  TEXT NOT NULL,
