@@ -38,5 +38,5 @@ docker-compose down
 Enter database:
 
 ```bash
-docker-compose exec postgres psql -U auth -W auth
+docker-compose exec postgres psql -U auth -W shortlinker
 ```
